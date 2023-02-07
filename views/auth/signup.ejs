@@ -1,8 +1,18 @@
 <h1>sign up</h1>
+<a href="login">Already Registered? Sign in!</a>
 
 <form style="display:flex;flex-direction: column;" method="POST" action="/auth/signup">
-    <label for="">Username:<input type="text" name="username"></label>
-    <label for="">Email:<input type="email" name="email"></label>
+    <label for="">Username:<input type="text" name="username" <% if (typeof errorMessage !== 'undefined') { %>
+     value="<%= userData.username %>"
+    <% } %>></label>
+    <label for="">Email:<input type="email" name="email" <% if (typeof errorMessage !== 'undefined') { %>
+        value="<%= userData.email %>"
+       <% } %>></label>
     <label for="">Password:<input type="password" name="password"></label>
     <button type="submit">signUp</button>
 </form>
+
+<% if (typeof errorMessage !== 'undefined') { %>
+    <p style="color: red"><%= errorMessage %></p>
+    <% } %>
+    
