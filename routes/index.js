@@ -1,4 +1,4 @@
-const { isLoggedIn } = require("../middleware/route-guard");
+const { isLoggedIn, isLoggedOut } = require("../middleware/route-guard");
 
 const router = require("express").Router();
 
@@ -14,6 +14,14 @@ router.get("/profile", isLoggedIn, (req, res) => {
   //   res.redirect("/auth/login")
   // }
   res.render("profile", {user: req.session.user});
+});
+
+router.get("/main", isLoggedIn, (req, res, next) => {
+  res.render("main");
+});
+
+router.get("/private", isLoggedIn, (req, res, next) => {
+  res.render("private");
 });
 
 module.exports = router;
