@@ -67,17 +67,23 @@ router.post('/login', async (req, res) => {
     if (bcrypt.compareSync(body.password, user.passwordHash)) {
       // Correct password
 
-      // const tempUser = {
-      //   username: user.username,
-      //   email: user.email,
-      // }
+      const tempUser = {
+        username: user.username,
+        email: user.email,
+      }
+      console.log("tempUser: ", tempUser)
 
-      // req.session.user = tempUser
-      res.redirect('/profile')
-    } else {
+      //req.session.user = tempUser
+      res.render('profile', {user})
+    } if(!bcrypt.compareSync(body.password, user.passwordHash) && body.password == "") {
+      // Incorrect password
+      console.log("Please enter your password")
+      res.render("auth/login", {errorMessage: "Please enter your password", userData: req.body});
+    }
+    if(!bcrypt.compareSync(body.password, user.passwordHash) && body.password != "") {
       // Incorrect password
       console.log("Incorrect password")
-      res.render("auth/login", {errorMessage: "User not found", userData: req.body});
+      res.render("auth/login", {errorMessage: "Incorrect password", userData: req.body});
     }
   } else {
     // User not found.
