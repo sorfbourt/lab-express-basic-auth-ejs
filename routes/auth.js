@@ -2,15 +2,16 @@ const router = require("express").Router();
 const UserModel = require('../models/User.model')
 const bcrypt = require('bcryptjs');
 const User = require("../models/User.model");
+const { isLoggedOut } = require("../middleware/route-guard");
 
 /* GET home page */
-router.get("/signup", (req, res, next) => {
+router.get("/signup", isLoggedOut, (req, res, next) => {
   res.render("auth/signup");
 });
 
 
 
-router.post("/signup", async (req, res, next) => {
+router.post("/signup", isLoggedOut, async (req, res, next) => {
 
 
   
@@ -50,12 +51,12 @@ router.post("/signup", async (req, res, next) => {
 });
 
 
-router.get("/login", (req, res, next) => {
+router.get("/login", isLoggedOut, (req, res, next) => {
   res.render("auth/login");
 });
 
 
-router.post('/login', async (req, res) => {
+router.post('/login', isLoggedOut, async (req, res) => {
   console.log('SESSION =====> ', req.session);
   const body = req.body
 
