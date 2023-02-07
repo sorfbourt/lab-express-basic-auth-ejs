@@ -6,7 +6,12 @@ router.get("/", (req, res, next) => {
 });
 
 router.get("/profile", (req, res, next) => {
-  res.render("profile");
+  console.log('SESSION =====> ', req.session);
+  //instead of copy pasting the below all on pages,use "protected"
+  // if(!req.session.user){
+  //   res.redirect("/auth/login")
+  // }
+  res.render("profile", {user: req.session.user});
 });
 
 module.exports = router;

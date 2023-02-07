@@ -56,6 +56,7 @@ router.get("/login", (req, res, next) => {
 
 
 router.post('/login', async (req, res) => {
+  console.log('SESSION =====> ', req.session);
   const body = req.body
 
   const userMatch = await User.find({ username: body.username })
@@ -71,10 +72,11 @@ router.post('/login', async (req, res) => {
         username: user.username,
         email: user.email,
       }
-      console.log("tempUser: ", tempUser)
 
-      //req.session.user = tempUser
-      res.render('profile', {user})
+     console.log("req.session: ", req.session)
+
+      req.session.user = tempUser
+      res.redirect('/profile')
     } if(!bcrypt.compareSync(body.password, user.passwordHash) && body.password == "") {
       // Incorrect password
       console.log("Please enter your password")
