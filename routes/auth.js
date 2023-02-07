@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const UserModel = require('../models/User.model')
 const bcrypt = require('bcryptjs');
+const User = require("../models/User.model");
 
 /* GET home page */
 router.get("/signup", (req, res, next) => {
@@ -54,6 +55,36 @@ router.get("/login", (req, res, next) => {
 });
 
 
+router.post('/login', async (req, res) => {
+  const body = req.body
+
+  const userMatch = await User.find({ username: body.username })
+  // console.log(userMatch)
+  if (userMatch.length) {
+    // User found
+    const user = userMatch[0]
+
+    if (bcrypt.compareSync(body.password, user.passwordHash)) {
+      // Correct password
+
+      // const tempUser = {
+      //   username: user.username,
+      //   email: user.email,
+      // }
+
+      // req.session.user = tempUser
+      res.redirect('/profile')
+    } else {
+      // Incorrect password
+      console.log("Incorrect password")
+      res.render("auth/login", {errorMessage: "User not found", userData: req.body});
+    }
+  } else {
+    // User not found.
+    console.log("User not found")
+    res.render("auth/login", {errorMessage: "User not found!", userData: req.body});
+  }
+})
 
 
 
